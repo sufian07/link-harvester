@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Jobs\StoreUrl;
+use Illuminate\Support\Facades\Log;
 
 class UrlController extends Controller
 {
@@ -28,39 +31,19 @@ class UrlController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        return view('pages.add-url');
-    }
+        $urls=preg_split('/\r\n|\r|\n/', $request->input('urls'));
+        $validator = Validator::make(['urls'=>$urls], [
+            'urls' => 'required',
+            'urls.*' => 'url',
+        ]);
+        if($validator->fails()) {
+            throw new \ErrorException($validator->errors()->first());
+        }
+        foreach($urls as $url) {
+            StoreUrl::dispatch($url);
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Url $url)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Url $url)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Url $url)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Url $url)
-    {
-        //
+        Log::info(json_encode($urls));
+        return response()->json(['success'=> true], 200);
     }
 }

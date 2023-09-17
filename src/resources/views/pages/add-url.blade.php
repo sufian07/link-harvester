@@ -37,7 +37,11 @@
                         } else {
                             this.errors.urls = undefined;
                         }
-                        axios.post('/', {urls: this.urls}).then((result) => {console.log(result)})
+                        axios.post('/', {urls: this.urls})
+                            .then((result) => {this.urls = ''})
+                            .catch((error) => {
+                                this.errors.urls = error?.response?.data?.message || 'Please enter valid urls seperated by newline';
+                            })
                     }
                 }"
                 @submit.prevent="submit()"

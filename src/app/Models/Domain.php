@@ -3,19 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Url extends Model
+class Domain extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'url',
+        'name',
     ];
 
-    public function domain(): BelongsTo
+    public function urls(): HasMany
     {
-        return $this->belongsTo(Domain::class);
+        return $this->hasMany(Url::class);
     }
 }
