@@ -25,33 +25,41 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                 </svg>
             </a>
-            <form x-data="{
+            <form x-data="formData()" @submit.prevent="submit()" id="url-form">
+                @csrf
+                <textarea style="min-height: 250px" class="bg-white w-full px-6 py-6" name="urls" x-model="urls"
+                    placeholder="Add URLs" data-rules='["required"]'></textarea>
+                <p class="text-red-600" x-show.transition.in="errors.urls" x-text="errors.urls"></p>
+                <button class="bg-white w-full px-6 py-6 hover:bg-gray transition-all duration-250">Save URLs</button>
+            </form>
+        </div>
+        <script>
+            function formData() {
+                return {
                     urls: '',
-                    errors:{
+                    errors: {
                         urls: '',
                     },
                     submit() {
-                        if(!this.urls) {
+                        if (!this.urls) {
                             this.errors.urls = 'Please enter url data';
                             return;
                         } else {
                             this.errors.urls = undefined;
                         }
-                        axios.post('/', {urls: this.urls})
-                            .then((result) => {this.urls = ''})
+                        axios.post('/', {
+                                urls: this.urls
+                            })
+                            .then((result) => {
+                                this.urls = ''
+                            })
                             .catch((error) => {
-                                this.errors.urls = error?.response?.data?.message || 'Please enter valid urls seperated by newline';
+                                this.errors.urls = error?.response?.data?.message ||
+                                    'Please enter valid urls seperated by newline';
                             })
                     }
-                }"
-                @submit.prevent="submit()"
-                id="url-form"
-            >
-                @csrf
-                <textarea style="min-height: 250px" class="bg-white w-full px-6 py-6" name="urls" x-model="urls" placeholder="Add URLs"  data-rules='["required"]'></textarea>
-                <p class="text-red-600" x-show.transition.in="errors.urls" x-text="errors.urls"></p>
-                <button class="bg-white w-full px-6 py-6 hover:bg-gray transition-all duration-250">Save URLs</button>
-            </form>
-        </div>
+                }
+            }
+        </script>
     </div>
 @stop

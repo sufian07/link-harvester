@@ -46,4 +46,12 @@ class UrlController extends Controller
         Log::info(json_encode($urls));
         return response()->json(['success'=> true], 200);
     }
+
+    public function list(Request $request){
+        $per_page = $request->query('per_page');
+        $search = $request->query('search');
+        $sort_by = $request->query('sort_by');
+        $sort_by_direction = $request->query('sort_by_direction');
+        return response()->json(['urls'=>Url::where('url', 'like', '%'.$search.'%')->with('domain')->orderBy($sort_by, $sort_by_direction)->paginate($per_page)]);
+    }
 }

@@ -14,5 +14,6 @@ use App\Http\Controllers\UrlController;
 */
 
 Route::get('/', [UrlController::class, 'index']);
+Route::get('/urls', [UrlController::class, 'list']);
 Route::get('/add-url',[UrlController::class, 'create']);
 Route::post('/',[UrlController::class, 'store']);
