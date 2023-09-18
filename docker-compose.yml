@@ -39,6 +39,21 @@ services:
       - "9000:9000"
     working_dir: /var/www
   
+  #Supervisor Service
+  supervisor:
+    build:
+      context: ./docker/supervisor
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www
+    command: 
+      - /bin/sh
+      - -c
+      - supervisord -c /var/www/supervisord.conf 
+      - supervisorctl  start all
+    depends_on:
+      - app
+  
   #phpMyAdmin Service
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

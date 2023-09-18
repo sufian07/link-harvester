@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('urls', function (Blueprint $table) {
             $table->id();
             $table->string('url', 500)->unique();
+            $table->foreignIdFor(\App\Models\Domain::class, 'domain_id')->constrained();
             $table->timestamps();
         });
     }
