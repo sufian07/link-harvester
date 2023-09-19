@@ -5,8 +5,8 @@ which are validated and stored by the application. Users can see the submitted
 (links/domains) and search, sort those data. The results are displayed in a paginated table.
 ## Setup
 - Docker and make need to installed in your system
-- run `make build`
-- run `make up` 
+- run `make setup` for first time it will start the detached server
+- run `make up` when you already setup
 ## Technical Requirements:
 1. Install a fresh Laravel 10 application
 2. Create a page called “Add URLs”

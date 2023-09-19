@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Url;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Jobs\StoreUrl;
+use App\Jobs\ProcessUrl;
 use Illuminate\Support\Facades\Log;
 
 class UrlController extends Controller
@@ -39,10 +39,7 @@ class UrlController extends Controller
         if($validator->fails()) {
             throw new \ErrorException($validator->errors()->first());
         }
-        foreach($urls as $url) {
-            StoreUrl::dispatch($url);
-        }
-
+        ProcessUrl::dispatch($urls);
         Log::info(json_encode($urls));
         return response()->json(['success'=> true], 200);
     }

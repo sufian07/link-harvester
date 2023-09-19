@@ -7,3 +7,5 @@ RUN apt-get install -y autoconf pkg-config libssl-dev
 
 RUN docker-php-ext-install bcmath mbstring intl opcache
 RUN docker-php-ext-install pdo pdo_mysql mysqli
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
